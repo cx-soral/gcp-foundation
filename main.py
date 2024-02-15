@@ -16,8 +16,8 @@ def main():
         bigbang()
     elif command == "install-module" and len(sys.argv) == 3:
         install_module(sys.argv[2])
-    elif command == "create-application" and len(sys.argv) == 3:
-        create_application(sys.argv[2])
+    elif command == "create-app" and len(sys.argv) == 3:
+        create_app(sys.argv[2])
     else:
         print("Invalid command or missing arguments.")
 
@@ -30,8 +30,8 @@ def install_module(module_name):
     print(f"Installing module: {module_name}")
 
 
-def create_application(application_name):
-    print(f"Creating application: {application_name}")
+def create_app(app_name):
+    print(f"Creating application: {app_name}")
 
 if __name__ == "__main__":
     main()
