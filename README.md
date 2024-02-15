@@ -1,3 +1,8 @@
+# GCP Foundation
+## Objects Relationship Maps
+1. All application is installed on a foundation
+2. Each application could have instance of modules
+3. Before module is usable in each application, they must be enabled in foundation
 ```mermaid
 graph TD
     F(Foundation) -->|Installs| A1(Application 1)
@@ -11,3 +16,17 @@ graph TD
     A2 -->|Has Instance of| M2
     A2 -->|Has Instance of| M3
 ```
+
+## GCP Foundation Introduction
+
+## Usage
+### Preparation
+
+### Foundation Operations
+make bigbang
+
+### Module Operations
+make install-module module_name=`module_name`
+
+### Application Operations
+make create-app app_name=`application_name`
