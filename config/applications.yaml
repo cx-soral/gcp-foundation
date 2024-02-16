@@ -1,0 +1,8 @@
+dev:
+  branch: main
+
+sit:
+  branch: tags
+
+prd:
+  branch:
