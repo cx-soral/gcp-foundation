@@ -6,7 +6,7 @@ locals {
   landscape = yamldecode(file("${path.root}/../../config/landscape.yaml"))
 }
 
-module "project" {
+module "projects" {
   source = "../../modules/gcp-module-project"
 
   for_each = local.landscape["environments"]
