@@ -9,11 +9,11 @@ init:
 bigbang: init
 	python main.py bigbang
 
-install-module: init
-	@if [ -z "$(module_name)" ]; then \
-		echo "Module name not specified. Usage: make install-module module_name=<module_name>"; \
+init-module: init
+	@if [ -z "$(module_class)" || -z "$(package)" ]; then \
+		echo "Module name not specified. Usage: make init-module module_class=<module_class> package=<package>"; \
 	else \
-		python main.py install-module $(module_name); \
+		python main.py init-module -m $(module_class) -p $(package); \
 	fi
 
 create-app: init
