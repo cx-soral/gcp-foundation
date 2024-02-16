@@ -1,8 +1,12 @@
-dev:
-  branch: main
+settings:
+  project_prefix:
 
-sit:
-  branch: tags
+environments:
+  dev:
+    branch: main
 
-prd:
-  branch:
+  sit:
+    branch: tags
+
+  prd:
+    branch:

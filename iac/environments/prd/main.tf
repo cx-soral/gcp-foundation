@@ -1,12 +1,15 @@
-variable "project_id" {
+variable "project_prefix" {
   type = string
 }
 
 locals {
-  yaml_content = yamldecode(file("${path.root}/../../config/landscape.yaml"))
+  landscape = yamldecode(file("${path.root}/../../config/landscape.yaml"))
 }
 
 module "project" {
   source = "../../modules/gcp-module-project"
-  project_id = var.project_id
+
+  for_each = local.landscape["environments"]
+
+  project_id = "${path.root}${each.key}"
 }

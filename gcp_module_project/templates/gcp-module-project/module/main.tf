@@ -1,3 +1,3 @@
-output "hello_world" {
-  value = "Project created"
+output "project_output" {
+  value = "Project ${var.project_id} created"
 }
