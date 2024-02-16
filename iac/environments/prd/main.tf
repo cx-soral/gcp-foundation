@@ -3,7 +3,7 @@ variable "project_prefix" {
 }
 
 locals {
-  landscape = yamldecode(file("${path.root}/../../config/landscape.yaml"))
+  landscape = yamldecode(file("../../../config/landscape.yaml"))
 }
 
 module "projects" {
