@@ -10,7 +10,7 @@ bigbang: init
 	python main.py bigbang
 
 init-module: init
-	@if [ -z "$(module_class)" || -z "$(package)" ]; then \
+	@if [ -z "$(module_class)" ] || [ -z "$(package)" ]; then \
 		echo "Module name not specified. Usage: make init-module module_class=<module_class> package=<package>"; \
 	else \
 		python main.py init-module -m $(module_class) -p $(package); \

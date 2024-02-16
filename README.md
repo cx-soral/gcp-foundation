@@ -26,7 +26,7 @@ graph TD
 make bigbang
 
 ### Module Operations
-make install-module module_name=`module_name`
+make init-module module_class=`module_class` package=`package`
 
 ### Application Operations
 make create-app app_name=`application_name`
