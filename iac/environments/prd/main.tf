@@ -9,7 +9,6 @@ locals {
 module "projects" {
   source = "../../modules/gcp-module-project"
 
-  for_each = local.landscape["environments"]
-
-  project_id = "${path.root}${each.key}"
+  project_prefix = var.project_prefix
+  environment_dict = local.landscape["environments"]
 }

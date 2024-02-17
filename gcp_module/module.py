@@ -10,6 +10,7 @@ class Module:
         package_dir = os.path.dirname(os.path.abspath(sys.modules[self.__class__.__module__].__file__))
         self.source_dir = source_dir
         self.module_dir = os.path.join(package_dir, "templates", self.module_name, "module")
+        self.base_dir = os.path.join(package_dir, "templates", self.module_name, "base")
 
     def enable(self, module_dir: str = os.path.sep.join(["iac", "modules"])):
         """Enable a module in a foundation
