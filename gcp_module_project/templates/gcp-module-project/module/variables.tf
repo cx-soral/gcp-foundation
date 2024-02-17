@@ -1,8 +1,11 @@
-variable "project_prefix" {
+variable "source_dir" {
   type = string
+  description = "Resource directory to be deployed"
+  default = null
 }
 
-variable "environment_dict" {
-  type = map(map(any))
-  description = "Environment dictionary. Env name as key and Env config as value "
+variable "source_file" {
+  type = string
+  description = "Resource file to be deployed"
+  default = null
 }
