@@ -22,8 +22,11 @@ graph TD
 ## Usage
 ### Preparation
 
-### Foundation Operations
+### Starting from scratch
 make bigbang
+
+### Creation foundation
+make 
 
 ### Module Operations
 make init-module module_class=`module_class` package=`package`

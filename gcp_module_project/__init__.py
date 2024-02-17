@@ -1,4 +1,4 @@
-from gcp_module_project.module import Project
+from gcp_module_project.project import Project
 
 __all__ = [
     "Project"
