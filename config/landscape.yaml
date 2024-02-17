@@ -1,0 +1,12 @@
+settings:
+  project_prefix: soral-app-
+
+environments:
+  dev:
+    branch: main
+
+  sit:
+    branch: tags
+
+  prd:
+    branch:
