@@ -1,3 +1,4 @@
-output "project_output" {
-  value = "Project ${var.project_id} created"
+resource "local_file" "hello" {
+  content  = "Project ${var.project_id} created"
+  filename = "${path.module}/${var.project_id}.txt"
 }
