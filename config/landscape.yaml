@@ -1,4 +1,6 @@
 settings:
+  realm_name:
+  foundation_name:
   project_prefix: soral-app-
 
 environments:

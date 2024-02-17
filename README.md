@@ -25,8 +25,8 @@ graph TD
 ### Starting from scratch
 make bigbang
 
-### Creation foundation
-make 
+### Foundation Operations
+make create
 
 ### Module Operations
 make init-module module_class=`module_class` package=`package`

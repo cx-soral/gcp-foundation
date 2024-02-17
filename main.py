@@ -19,7 +19,15 @@ class Foundation:
         self.package_pattern = re.compile(r'^[a-zA-Z0-9_-]+$')
 
     def bigbang(self):
+        """Create the realm administration project"""
         print("Running 'bigbang' command.")
+
+    def birth(self):
+        self.register_module("gcp-module-project", "Project")
+        self.register_module("gcp-module-application", "Application")
+        self.update_requirements()
+        self.install_requirements()
+        self.enable_modules()
 
     def register_module(self, package: str, module_class: str):
         if not self.package_pattern.match(package):
@@ -89,6 +97,12 @@ def main():
     # Create the parser for the "bigbang" command
     parser_bigbang = subparsers.add_parser('bigbang', help='Execute the Big Bang command')
 
+    # Create the parser for the "birth" command
+    parser_birth = subparsers.add_parser('birth', help='Create the current repo related foundation')
+    parser_birth.add_argument('-b', '--tf_bucket', type=str, help='Bucket to hold tfstates file')
+    parser_birth.add_argument('-n', '--tf_prefix', type=str, help='Prefix to hold tfstates file')
+    parser_birth.add_argument('-p', '--project_prefix', type=str, help='Prefix of GCP Project')
+
     # Create the parser for the "init-module" command
     parser_install = subparsers.add_parser('init-module', help='Install a module')
     parser_install.add_argument('-m', '--module_class', type=str, help='Name of the module class to install')
@@ -96,7 +110,7 @@ def main():
 
     # Create the parser for the "create-app" command
     parser_create = subparsers.add_parser('create-app', help='Create an application')
-    parser_create.add_argument('app', type=str, help='Name of the application to create')
+    parser_create.add_argument('-n', '--app_name', type=str, help='Name of the application to create')
 
     # Parse the arguments
     args = parser.parse_args()
@@ -108,7 +122,7 @@ def main():
     elif args.command == 'init-module':
         foundation.init_module(package=args.package, module_class=args.module_class)
     elif args.command == 'create-app':
-        foundation.create_app(args.app)
+        foundation.create_app(app_name=args.app_name)
     else:
         # If no command is provided, show help
         parser.print_help()
