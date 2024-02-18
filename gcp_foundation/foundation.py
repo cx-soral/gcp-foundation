@@ -33,6 +33,7 @@ class Foundation:
         get_billing_cmd = f"gcloud billing accounts list --filter='open=true' --format='value(ACCOUNT_ID)' --limit=1"
         r = subprocess.run(get_billing_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
         current_settings["billing_account"] = r.stdout if "ERROR" not in r.stderr else None
+        print(current_settings["billing_account"])
         check_project_cmd = f"gcloud projects list --filter='{realm_project}' --format='value(projectId)'"
         r = subprocess.run(check_project_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
         if realm_project in r.stdout:
