@@ -1,5 +1,5 @@
 module "applications" {
-  source = "../../modules/gcp-module-project"
+  source = "../../modules/gcp-module-application"
 
   source_file = "../../../config/landscape.yaml"
 }
