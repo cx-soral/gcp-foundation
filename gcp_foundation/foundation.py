@@ -95,12 +95,12 @@ class Foundation:
         # self.enable_modules()
 
     def prepare(self):
-        # self.update_requirements()
-        # self.install_requirements()
-        # self.enable_modules()
+        self.update_requirements()
+        self.install_requirements()
+        self.enable_modules()
         self.enable_environments("prd")
-        # self.terraform_init("prd")
-        # self.terraform_apply("prd")
+        self.terraform_init("prd")
+        self.terraform_apply("prd")
 
     def register_module(self, package: str, module_class: str):
         if not self.package_pattern.match(package):
