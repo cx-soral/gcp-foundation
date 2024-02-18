@@ -30,16 +30,17 @@ class Foundation:
         if current_realm_project and current_realm_project != realm_project:
             raise ValueError("Realm project doesn't match configured landscape.yaml")
         realm_name = realm_project if not realm_name else realm_name
-        current_settings["realm_name"] = realm_name
-        with open(self.landscape_yaml, 'w') as file:
-            yaml.dump(landscape_dict, file, default_flow_style=False, sort_keys=False)
         check_project_cmd = f"gcloud projects list --filter='{realm_project}' --format='value(projectId)'"
-        result = subprocess.run(check_project_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
-        if realm_project in result.stdout:
+        r = subprocess.run(check_project_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
+        if realm_project in r.stdout:
             print(f"Realm Project {realm_project} already exists")
         else:
             create_project_cmd = f"gcloud projects create {realm_project} --name='{realm_name}'"
-            subprocess.run(check_project_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
+            r = subprocess.run(check_project_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
+            if "ERROR" not in r.stderr:
+                current_settings["realm_name"] = realm_name
+                with open(self.landscape_yaml, 'w') as file:
+                    yaml.dump(landscape_dict, file, default_flow_style=False, sort_keys=False)
 
     def birth(self):
         self.register_module("gcp-module-project", "Project")

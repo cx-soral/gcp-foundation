@@ -1,5 +1,5 @@
 settings:
-  realm_name: soral-realm
+  realm_name: null
   realm_project: null
   foundation_name: null
   project_prefix: soral-app-
