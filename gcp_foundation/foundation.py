@@ -65,9 +65,20 @@ class Foundation:
                 current_settings["foundation_name"] = foundation_name
                 with open(self.landscape_yaml, 'w') as file:
                     yaml.dump(landscape_dict, file, default_flow_style=False, sort_keys=False)
+            else:
+                print(r.stderr)
+
+    def terraform_init(self, env: str):
+        with open(self.landscape_yaml, 'r') as file:
+            landscape_dict = yaml.safe_load(file) or {}
+        current_settings = landscape_dict.get("settings", {})
+        bucket_name = current_settings["realm_project"] + "_" + current_settings["foundation_name"]
+        tf_init_cmd = f'terraform -chdir=iac/environments/{env} init -backend-config="bucket={bucket_name}"'
+        r = subprocess.run(tf_init_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
 
     def birth(self, foundation_name: str):
-        self.create_backend(foundation_name)
+        # self.create_backend(foundation_name)
+        self.terraform_init('prd')
         """
         self.register_module("gcp-module-project", "Project")
         self.register_module("gcp-module-application", "Application")
