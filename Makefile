@@ -7,7 +7,11 @@ init:
 	pip install PyYAML
 
 bigbang: init
-	python main.py bigbang
+	@if [ -z "$(realm_project)" ]; then \
+		echo "Realm project not specified. Usage: make bigbang realm_project=<realm_project>"; \
+	else \
+		python main.py bigbang -p $(realm_project); \
+	fi
 
 init-module: init
 	@if [ -z "$(module_class)" ] || [ -z "$(package)" ]; then \
