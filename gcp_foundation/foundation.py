@@ -74,7 +74,7 @@ class Foundation:
         current_settings = landscape_dict.get("settings", {})
         bucket_name = current_settings["realm_project"] + "_" + current_settings["foundation_name"]
         tf_init_cmd = f'terraform -chdir=iac/environments/{env} init -backend-config="bucket={bucket_name}"'
-        r = subprocess.run(tf_init_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
+        subprocess.run(tf_init_cmd, text=True, shell=True)
 
     def birth(self, foundation_name: str):
         # self.create_backend(foundation_name)
