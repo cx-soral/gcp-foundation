@@ -1,4 +1,4 @@
-.PHONY: all bigbang install-module create-application
+.PHONY: all bigbang birth init-module create-application
 
 all:
 	@echo "Specify a command to run"
@@ -11,6 +11,13 @@ bigbang: init
 		echo "Realm project not specified. Usage: make bigbang realm_project=<realm_project>"; \
 	else \
 		python main.py bigbang -p $(realm_project); \
+	fi
+
+birth: init
+	@if [ -z "$(foundation_name)" ]; then \
+		echo "Foundation name not specified. Usage: make birth foundation_name=<foundation_name>"; \
+	else \
+		python main.py birth -n $(foundation_name); \
 	fi
 
 init-module: init
