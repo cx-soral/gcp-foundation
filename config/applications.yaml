@@ -1,3 +1,4 @@
 application-02:
+  visibility: public
   repository_owner: cx-soral
   repository_name: application-02

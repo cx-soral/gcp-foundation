@@ -13,9 +13,16 @@ locals {
   environment_dict = local.landscape["environments"]
 }
 
-resource "local_file" "applications" {
-  for_each = local.environment_dict
+resource "github_repository" "app-repository" {
+  for_each = local.applications
 
-  content  = "Project ${local.project_prefix}${each.key} created!"
-  filename = "${local.project_prefix}${each.key}.txt"
+  name        = each.value["repository_name"]
+  description = 'Application: ${each.value["repository_name"]}'
+
+  visibility = each.value["visibility"]
+
+  template {
+    owner                = "cx-soral"
+    repository           = "gcp-framework"
+  }
 }
