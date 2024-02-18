@@ -1,11 +1,9 @@
-variable "source_dir" {
+variable "landscape_file" {
   type = string
-  description = "Resource directory to be deployed"
-  default = null
+  description = "Landscape file"
 }
 
-variable "source_file" {
+variable "applications_file" {
   type = string
-  description = "Resource file to be deployed"
-  default = null
+  description = "Application config file"
 }

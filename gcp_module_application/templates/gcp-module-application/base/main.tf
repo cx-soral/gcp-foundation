@@ -1,5 +1,6 @@
 module "gcp_module_application" {
   source = "../../modules/gcp-module-application"
 
-  source_file = "../../../config/landscape.yaml"
+  landscape_file = "../../../config/landscape.yaml"
+  applications_file = "../../../config/applications.yaml"
 }
