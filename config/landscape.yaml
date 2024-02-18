@@ -11,3 +11,7 @@ environments:
     match_branch: refs/tags/.*
   prd:
     match_branch: none^
+modules:
+  gcp_module_bigquery:
+    Table:
+      - application-05
