@@ -106,6 +106,7 @@ class Foundation:
         self.update_requirements()
         self.install_requirements()
         self.enable_modules()
+        self.activate_modules()
         self.enable_environments("prd")
         self.terraform_init("prd")
         self.terraform_plan("prd")
@@ -159,6 +160,17 @@ class Foundation:
                 module_class = getattr(module_obj, module_class_name)
                 module_instance = module_class()
                 module_instance.enable(self.module_dir)
+
+    def activate_modules(self):
+        with open(self.landscape_yaml, 'r') as file:
+            landscape = yaml.safe_load(file) or {}
+        for package_name, package_config in landscape.get("modules", {}):
+            module_obj = importlib.import_module(package_name.replace("-", "_"))
+            for module_class_name in package_config:
+                # Check if module file already exists
+                module_class = getattr(module_obj, module_class_name)
+                module_instance = module_class()
+                module_instance.activate(self.module_dir)
 
     def enable_environments(self, env: str):
         if os.path.exists(os.path.join(self.env_dir, env)):

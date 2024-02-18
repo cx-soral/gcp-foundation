@@ -1,3 +1,10 @@
+locals {
+  landscape = yamldecode(file(var.landscape_file))
+  applications = yamldecode(file(var.applications_file))
+  project_prefix = local.landscape["settings"]["project_prefix"]
+  environment_dict = local.landscape["environments"]
+}
+
 resource "google_project_iam_custom_role" "gcp_module_table_deployer_role" {
   for_each = local.environment_dict
 

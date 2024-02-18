@@ -1,13 +1,10 @@
-resource "google_project_iam_custom_role" "gcp_module_table_deployer_role" {
-  role_id     = "myCustomRole"
-  title       = "My Custom Role"
-  description = "A custom role that combines specific permissions."
-  permissions = [
-    "compute.instances.start",
-    "compute.instances.stop",
-    "compute.instances.get",
-    "compute.networks.read",
-    "storage.objects.list",
-    "storage.objects.get"
-  ]
+module "gcp_module_application" {
+  source = "../../modules/activate-gcp-module-table"
+
+  landscape_file = var.landscape_file
+  applications_file = var.applications_file
+  modules_file = var.modules_file
+
+  depends_on = [module.gcp_module_project]
 }
+
