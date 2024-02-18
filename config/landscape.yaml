@@ -1,14 +1,12 @@
 settings:
-  realm_name:
-  foundation_name:
+  realm_name: soral-realm
+  realm_project: null
+  foundation_name: null
   project_prefix: soral-app-
-
 environments:
   dev:
     branch: main
-
   sit:
     branch: tags
-
   prd:
-    branch:
+    branch: null

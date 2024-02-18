@@ -11,6 +11,7 @@ class Foundation:
     def __init__(self, config_dir: str = "config", **kwargs):
         self.config_dir = config_dir
         self.module_dir = os.path.sep.join(["iac", "modules"])
+        self.landscape_yaml = os.path.sep.join([self.config_dir, "landscape.yaml"])
         self.application_yaml = os.path.sep.join([self.config_dir, "applications.yaml"])
         self.module_yaml = os.path.sep.join([self.config_dir, "modules.yaml"])
 
@@ -18,9 +19,27 @@ class Foundation:
         self.requirements_txt = os.path.sep.join([self.config_dir, "requirements.txt"])
         self.package_pattern = re.compile(r'^[a-zA-Z0-9_-]+$')
 
-    def bigbang(self):
+    def bigbang(self, realm_project: str, realm_name: str = None):
         """Create the realm administration project"""
-        print("Running 'bigbang' command.")
+        with open(self.landscape_yaml, 'r') as file:
+            landscape_dict = yaml.safe_load(file) or {}
+        current_settings = landscape_dict.get("settings", {})
+        current_realm_project = current_settings.get("realm_project", "")
+        if not realm_project:
+            raise ValueError("Realm project must be provided")
+        if current_realm_project and current_realm_project != realm_project:
+            raise ValueError("Realm project doesn't match configured landscape.yaml")
+        realm_name = realm_project if not realm_name else realm_name
+        current_settings["realm_name"] = realm_name
+        with open(self.landscape_yaml, 'w') as file:
+            yaml.dump(landscape_dict, file, default_flow_style=False, sort_keys=False)
+        check_project_cmd = f"gcloud projects list --filter='{realm_project}' --format='value(projectId)'"
+        result = subprocess.run(check_project_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
+        if realm_project in result.stdout:
+            print(f"Realm Project {realm_project} already exists")
+        else:
+            create_project_cmd = f"gcloud projects create {realm_project} --name='{realm_name}'"
+            subprocess.run(check_project_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
 
     def birth(self):
         self.register_module("gcp-module-project", "Project")
@@ -96,6 +115,8 @@ def main():
 
     # Create the parser for the "bigbang" command
     parser_bigbang = subparsers.add_parser('bigbang', help='Execute the Big Bang command')
+    parser_bigbang.add_argument('-n', '--realm_name', type=str, help='Realm name to Bigbang')
+    parser_bigbang.add_argument('-p', '--realm_project', type=str, help='Realm project to Bigbang')
 
     # Create the parser for the "birth" command
     parser_birth = subparsers.add_parser('birth', help='Create the current repo related foundation')
@@ -118,7 +139,7 @@ def main():
     # Handle different commands
     foundation = Foundation()
     if args.command == 'bigbang':
-        foundation.bigbang()
+        foundation.bigbang(realm_project=args.realm_project, realm_name=args.realm_name)
     elif args.command == 'init-module':
         foundation.init_module(package=args.package, module_class=args.module_class)
     elif args.command == 'create-app':
