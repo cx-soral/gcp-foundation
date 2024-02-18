@@ -89,3 +89,12 @@ resource "google_service_account" "github_provider_sa" {
   account_id   = "wip-${each.value["repository_name"]}-sa"
   display_name = "Service Account for Identity Pool provider of ${each.value["repository_name"]}"
 }
+
+resource "google_service_account_iam_binding" "service_account_binding" {
+  for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
+  service_account_id = google_service_account.github_provider_sa[each.key].id
+  role               = "roles/iam.workloadIdentityUser"
+  members = [
+    "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github_pool[each.key].name}/attribute.repository/${each.value["repository_owner"]}/${each.value["repository_name"]}"
+  ]
+}
