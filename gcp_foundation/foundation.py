@@ -134,6 +134,8 @@ class Foundation:
     def update_requirements(self):
         with open(self.module_yaml, 'r') as file:
             package_dict = yaml.safe_load(file) or {}
+        with open(self.landscape_yaml, 'r') as file:
+            activate_dict = yaml.safe_load(file) or {}
         package_list = []
         for package_name in package_dict:
             module_name = package_name.replace("-", "_")
@@ -164,13 +166,12 @@ class Foundation:
     def activate_modules(self):
         with open(self.landscape_yaml, 'r') as file:
             landscape = yaml.safe_load(file) or {}
-        for package_name, package_config in landscape.get("modules", {}).items():
-            module_obj = importlib.import_module(package_name.replace("-", "_"))
-            for module_class_name in package_config:
-                # Check if module file already exists
-                module_class = getattr(module_obj, module_class_name)
-                module_instance = module_class()
-                module_instance.activate(self.module_dir)
+        for module_name, module_config in landscape.get("modules", {}).items():
+            module_obj = importlib.import_module(module_config["package"].replace("-", "_"))
+            # Check if module file already exists
+            module_class = getattr(module_obj, module_config["class"])
+            module_instance = module_class()
+            module_instance.activate(self.module_dir)
 
     def enable_environments(self, env: str):
         if os.path.exists(os.path.join(self.env_dir, env)):

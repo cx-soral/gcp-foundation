@@ -12,6 +12,8 @@ environments:
   prd:
     match_branch: none^
 modules:
-  gcp_module_bigquery:
-    Table:
+  gcp_module_table:
+    package: gcp-module-bigquery
+    class: Table
+    applications:
       - application-05
