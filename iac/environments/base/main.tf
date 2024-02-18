@@ -4,4 +4,5 @@ locals {
   modules = yamldecode(file(var.modules_file))
   environment_dict = local.landscape["environments"]
   modules_dict = local.landscape["modules"]
+  project_prefix = local.landscape["settings"]["project_prefix"]
 }
