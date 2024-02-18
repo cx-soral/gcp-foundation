@@ -38,9 +38,12 @@ class Foundation:
             create_project_cmd = f"gcloud projects create {realm_project} --name='{realm_name}'"
             r = subprocess.run(check_project_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
             if "ERROR" not in r.stderr:
+                print(f"Realm Project {realm_project} create successfully")
                 current_settings["realm_name"] = realm_name
                 with open(self.landscape_yaml, 'w') as file:
                     yaml.dump(landscape_dict, file, default_flow_style=False, sort_keys=False)
+            else:
+                print(r.stderr)
 
     def birth(self):
         self.register_module("gcp-module-project", "Project")
