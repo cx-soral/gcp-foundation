@@ -1,11 +1,8 @@
 locals {
   landscape = yamldecode(file(var.source_file))
   project_prefix = local.landscape["settings"]["project_prefix"]
+  billing_account = local.landscape["settings"]["billing_account"]
   environment_dict = local.landscape["environments"]
-}
-
-data "google_billing_account" "available_accounts" {
-  open         = true
 }
 
 resource "google_project" "env_projects" {
@@ -13,5 +10,5 @@ resource "google_project" "env_projects" {
 
   name = "${local.project_prefix}${each.key}"
   project_id = "${local.project_prefix}${each.key}"
-  billing_account = local.landscape["settings"]["billing_account"]
+  billing_account = local.billing_account
 }
