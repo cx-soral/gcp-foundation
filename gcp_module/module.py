@@ -26,11 +26,13 @@ class Module:
             print(f"Found local module {self.module_name}")
         else:
             shutil.copytree(self.module_dir, target_module_dir)
+            print(f"Global module {self.module_name} loaded")
         target_base_file = os.path.sep.join([base_dir, self.module_name.replace("-", "_") + ".tf"])
         if os.path.exists(target_base_file):
             print(f"Found local base file {target_base_file}")
         else:
             shutil.copy(self.base_file, target_base_file)
+            print(f"Global  base file {target_base_file} loaded")
 
     def initialize(self):
         """Initialize a module in an application
