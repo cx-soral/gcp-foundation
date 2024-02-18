@@ -1,5 +1,6 @@
 import re
 import os
+import shutil
 import subprocess
 import importlib
 import yaml
@@ -9,6 +10,7 @@ class Foundation:
     def __init__(self, config_dir: str = "config", **kwargs):
         self.config_dir = config_dir
         self.module_dir = os.path.sep.join(["iac", "modules"])
+        self.env_dir = os.path.sep.join(["iac", "environments"])
         self.landscape_yaml = os.path.sep.join([self.config_dir, "landscape.yaml"])
         self.application_yaml = os.path.sep.join([self.config_dir, "applications.yaml"])
         self.module_yaml = os.path.sep.join([self.config_dir, "modules.yaml"])
@@ -93,11 +95,12 @@ class Foundation:
         # self.enable_modules()
 
     def prepare(self):
-        self.update_requirements()
-        self.install_requirements()
-        self.enable_modules()
-        self.terraform_init("prd")
-        self.terraform_apply("prd")
+        # self.update_requirements()
+        # self.install_requirements()
+        # self.enable_modules()
+        self.enable_environments("prd")
+        # self.terraform_init("prd")
+        # self.terraform_apply("prd")
 
     def register_module(self, package: str, module_class: str):
         if not self.package_pattern.match(package):
@@ -135,6 +138,9 @@ class Foundation:
         with open(self.requirements_txt, 'w') as file:
             file.write(requirements_content)
 
+    def install_requirements(self):
+        subprocess.run(['pip', 'install', '-r', self.requirements_txt], check=True)
+
     def enable_modules(self):
         with open(self.module_yaml, 'r') as file:
             package_dict = yaml.safe_load(file) or {}
@@ -146,8 +152,11 @@ class Foundation:
                 module_instance = module_class()
                 module_instance.enable(self.module_dir)
 
-    def install_requirements(self):
-        subprocess.run(['pip', 'install', '-r', self.requirements_txt], check=True)
+    def enable_environments(self, env: str):
+        if os.path.exists(os.path.join(self.env_dir, env)):
+            print(f"Local environment {env} found")
+        else:
+            shutil.copytree(os.path.join(self.env_dir, "base"), os.path.join(self.env_dir, env))
 
     def init_module(self, package: str, module_class: str):
         self.register_module(package, module_class)
