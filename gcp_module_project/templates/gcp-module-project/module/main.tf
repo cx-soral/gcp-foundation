@@ -5,7 +5,6 @@ locals {
 }
 
 data "google_billing_account" "available_accounts" {
-  display_name = "My Billing Account"
   open         = true
 }
 
