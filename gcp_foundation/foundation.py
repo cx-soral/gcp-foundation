@@ -137,10 +137,7 @@ class Foundation:
                 # Check if module file already exists
                 module_class = getattr(module_obj, module_class_name)
                 module_instance = module_class()
-                if os.path.exists(os.path.join(self.module_dir, module_instance.module_name)):
-                    print(f"Found local module {module_instance.module_name}")
-                else:
-                    module_instance.enable(self.module_dir)
+                module_instance.enable(self.module_dir)
 
     def install_requirements(self):
         subprocess.run(['pip', 'install', '-r', self.requirements_txt], check=True)
