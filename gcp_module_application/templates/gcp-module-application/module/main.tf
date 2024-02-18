@@ -17,6 +17,8 @@ locals {
   all_pool_settings = toset(flatten([
     for app_name, app in local.applications : [
       for env_name, env in local.environment_dict : {
+        app_name          = app_name
+        env_name          = env_name
         repository_owner  = app["repository_owner"]
         repository_name   = app["repository_name"]
         project_id        = "${local.project_prefix}${env_name}"
@@ -41,7 +43,7 @@ resource "github_repository" "app-repository" {
 }
 
 resource "google_iam_workload_identity_pool" "github_pool" {
-  for_each = { for s in local.all_pool_settings : "${s.repository_owner}-${s.repository_name}-${s.project_id}" => s }
+  for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
 
   workload_identity_pool_id = "github-pool-${each.value["repository_name"]}"
   project  = each.value["project_id"]
@@ -55,7 +57,7 @@ resource "google_iam_workload_identity_pool" "github_pool" {
 }
 
 resource "google_iam_workload_identity_pool_provider" "github_provider" {
-  for_each = { for s in local.all_pool_settings : "${s.repository_owner}-${s.repository_name}-${s.project_id}" => s }
+  for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
 
   workload_identity_pool_id = google_iam_workload_identity_pool.github_pool[each.key].workload_identity_pool_id
   workload_identity_pool_provider_id     = "github-provider-${each.value["repository_name"]}"
@@ -79,4 +81,11 @@ resource "google_iam_workload_identity_pool_provider" "github_provider" {
   oidc {
     issuer_uri = "https://token.actions.githubusercontent.com"
   }
+}
+
+resource "google_service_account" "github_provider_sa" {
+  for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
+  project      = each.value["project_id"]
+  account_id   = "wip-${each.value["repository_name"]}-sa"
+  display_name = "Service Account for Identity Pool provider of ${each.value["repository_name"]}"
 }
