@@ -4,9 +4,9 @@ locals {
   environment_dict = local.landscape["environments"]
 }
 
-resource "local_file" "projects" {
+resource "google_project" "env_projects" {
   for_each = local.environment_dict
 
-  content  = "Project ${local.project_prefix}${each.key} created!"
-  filename = "${local.project_prefix}${each.key}.txt"
+  name = "${local.project_prefix}${each.key}"
+  project_id = "${local.project_prefix}${each.key}"
 }

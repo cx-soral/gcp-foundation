@@ -32,7 +32,7 @@ class Module:
             print(f"Found local base file {target_base_file}")
         else:
             shutil.copy(self.base_file, target_base_file)
-            print(f"Global  base file {target_base_file} loaded")
+            print(f"Global base file {target_base_file} loaded")
 
     def initialize(self):
         """Initialize a module in an application
