@@ -81,8 +81,12 @@ class Foundation:
         subprocess.run(tf_init_cmd, shell=True)
 
     def terraform_apply(self, env: str):
-        tf_init_cmd = f'terraform -chdir=iac/environments/{env} apply"'
-        subprocess.run(tf_init_cmd, shell=True)
+        tf_apply_cmd = f'terraform -chdir=iac/environments/{env} apply'
+        subprocess.run(tf_apply_cmd, shell=True)
+
+    def terraform_plan(self, env: str):
+        tf_plan_cmd = f'terraform -chdir=iac/environments/{env} plan'
+        subprocess.run(tf_plan_cmd, shell=True)
 
     def birth(self, foundation_name: str):
         """"""
@@ -100,7 +104,7 @@ class Foundation:
         self.enable_modules()
         self.enable_environments("prd")
         self.terraform_init("prd")
-        self.terraform_apply("prd")
+        self.terraform_plan("prd")
 
     def register_module(self, package: str, module_class: str):
         if not self.package_pattern.match(package):
