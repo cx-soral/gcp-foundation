@@ -35,8 +35,8 @@ class Foundation:
         if realm_project in r.stdout:
             print(f"Realm Project {realm_project} already exists")
         else:
-            create_project_cmd = f"gcloud projects create {realm_project} --name='{realm_name}'"
-            r = subprocess.run(check_project_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
+            create_proj_cmd = f"gcloud projects create {realm_project} --name='{realm_name}'"
+            r = subprocess.run(create_proj_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
             if "ERROR" not in r.stderr:
                 print(f"Realm Project {realm_project} create successfully")
                 current_settings["realm_name"] = realm_name
