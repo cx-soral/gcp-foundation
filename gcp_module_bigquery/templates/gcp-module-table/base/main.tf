@@ -1,5 +1,5 @@
-module "gcp_module_application" {
-  source = "../../modules/gcp-module-bigquery"
+module "gcp_module_table" {
+  source = "../../modules/gcp-module-table"
 
   landscape_file = "../../../config/landscape.yaml"
   applications_file = "../../../config/applications.yaml"
