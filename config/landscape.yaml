@@ -8,6 +8,6 @@ environments:
   dev:
     match_branch: refs/heads/main
   sit:
-    match_branch: refs/tags/*
+    match_branch: refs/tags/.*
   prd:
     match_branch: none^
