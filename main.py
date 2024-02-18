@@ -16,6 +16,9 @@ def main():
     parser_birth = subparsers.add_parser('birth', help='Create the current repo related foundation')
     parser_birth.add_argument('-n', '--foundation_name', type=str, help='Foundation name to birth')
 
+    # Create the parser for the "prepare" command
+    parser_prepare = subparsers.add_parser('prepare', help='Prepare current configurations')
+
     # Create the parser for the "init-module" command
     parser_install = subparsers.add_parser('init-module', help='Install a module')
     parser_install.add_argument('-m', '--module_class', type=str, help='Name of the module class to install')
@@ -34,6 +37,8 @@ def main():
         foundation.bigbang(realm_project=args.realm_project, realm_name=args.realm_name)
     if args.command == 'birth':
         foundation.birth(foundation_name=args.foundation_name)
+    if args.command == 'prepare':
+        foundation.prepare()
     elif args.command == 'init-module':
         foundation.init_module(package=args.package, module_class=args.module_class)
     elif args.command == 'create-app':

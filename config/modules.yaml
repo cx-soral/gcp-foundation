@@ -1,2 +1,4 @@
 gcp-module-project:
   Project: {}
+gcp-module-application:
+  Application: {}

@@ -77,15 +77,20 @@ class Foundation:
         subprocess.run(tf_init_cmd, shell=True)
 
     def birth(self, foundation_name: str):
+        """"""
         # self.create_backend(foundation_name)
-        self.terraform_init('prd')
-        """
+        # self.terraform_init('prd')
         self.register_module("gcp-module-project", "Project")
         self.register_module("gcp-module-application", "Application")
         self.update_requirements()
         self.install_requirements()
         self.enable_modules()
-        """
+
+    def prepare(self):
+        self.update_requirements()
+        self.install_requirements()
+        self.enable_modules()
+        self.terraform_init("prd")
 
     def register_module(self, package: str, module_class: str):
         if not self.package_pattern.match(package):
@@ -98,6 +103,8 @@ class Foundation:
             if module_class not in package_dict[package]:
                 package_dict[package].update({module_class: {}})
                 print(f"Module class {package}/{module_class} Registered")
+            else:
+                print(f"Module class {package}/{module_class} already exists")
         else:
             package_dict[package] = {module_class: {}}
             print(f"Package {package} created, Module class {module_class} Registered")
@@ -113,6 +120,7 @@ class Foundation:
             module_name = package_name.replace("-", "_")
             if not os.path.exists(f"./{module_name}"):
                 package_list.append(package_name)
+                print(f"{package_name} added to requirements")
             else:
                 print(f"Found local package {package_name}")
 
