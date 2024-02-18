@@ -6,8 +6,8 @@ settings:
   project_prefix: soral-app-
 environments:
   dev:
-    branch: main
+    match_branch: refs/heads/main
   sit:
-    branch: tags
+    match_branch: refs/tags/*
   prd:
-    branch: null
+    match_branch: none^
