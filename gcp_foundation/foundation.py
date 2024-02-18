@@ -63,6 +63,8 @@ class Foundation:
             if "ERROR" not in r.stderr:
                 print(f"Bucket {bucket_name} create successfully")
                 current_settings["foundation_name"] = foundation_name
+                if not current_settings.get("project_prefix", ""):
+                    current_settings["project_prefix"] = foundation_name + "-"
                 with open(self.landscape_yaml, 'w') as file:
                     yaml.dump(landscape_dict, file, default_flow_style=False, sort_keys=False)
             else:
@@ -76,21 +78,26 @@ class Foundation:
         tf_init_cmd = f'terraform -chdir=iac/environments/{env} init -backend-config="bucket={bucket_name}"'
         subprocess.run(tf_init_cmd, shell=True)
 
+    def terraform_apply(self, env: str):
+        tf_init_cmd = f'terraform -chdir=iac/environments/{env} apply"'
+        subprocess.run(tf_init_cmd, shell=True)
+
     def birth(self, foundation_name: str):
         """"""
-        # self.create_backend(foundation_name)
-        # self.terraform_init('prd')
-        self.register_module("gcp-module-project", "Project")
-        self.register_module("gcp-module-application", "Application")
-        self.update_requirements()
-        self.install_requirements()
-        self.enable_modules()
+        self.create_backend(foundation_name)
+        self.terraform_init('prd')
+        # self.register_module("gcp-module-project", "Project")
+        # self.register_module("gcp-module-application", "Application")
+        # self.update_requirements()
+        # self.install_requirements()
+        # self.enable_modules()
 
     def prepare(self):
         self.update_requirements()
         self.install_requirements()
         self.enable_modules()
         self.terraform_init("prd")
+        self.terraform_apply("prd")
 
     def register_module(self, package: str, module_class: str):
         if not self.package_pattern.match(package):

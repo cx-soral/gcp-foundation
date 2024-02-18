@@ -1,4 +1,4 @@
-.PHONY: all bigbang birth init-module create-application
+.PHONY: all bigbang birth apply init-module create-application
 
 all:
 	@echo "Specify a command to run"
@@ -19,6 +19,9 @@ birth: init
 	else \
 		python main.py birth -n $(foundation_name); \
 	fi
+
+apply: init
+	@python main.py prepare
 
 init-module: init
 	@if [ -z "$(module_class)" ] || [ -z "$(package)" ]; then \
