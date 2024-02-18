@@ -1,6 +1,6 @@
 settings:
-  realm_name: null
-  realm_project: null
+  realm_name: soral-base
+  realm_project: soral-base
   foundation_name: null
   project_prefix: soral-app-
 environments:
