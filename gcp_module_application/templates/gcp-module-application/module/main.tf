@@ -17,7 +17,7 @@ resource "github_repository" "app-repository" {
   for_each = local.applications
 
   name        = each.value["repository_name"]
-  description = 'Application: ${each.value["repository_name"]}'
+  description = "Application: ${each.value["repository_name"]}"
 
   visibility = each.value["visibility"]
 
