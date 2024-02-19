@@ -1,6 +1,7 @@
 settings:
   realm_name: soral-base
   realm_project: soral-base
+  realm_region: eu
   billing_account: 010054-67434E-D5BFF4
   foundation_name: soral-app
   project_prefix: soral-app-
