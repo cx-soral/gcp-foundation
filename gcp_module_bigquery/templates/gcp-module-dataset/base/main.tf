@@ -1,8 +1,5 @@
-module "gcp_module_table" {
-  source = "../../modules/gcp-module-table"
+module "gcp_module_dataset" {
+  source = "../../modules/gcp-module-dataset"
 
-  landscape_file = "../../../config/landscape.yaml"
-  applications_file = "../../../config/applications.yaml"
-
-  depends_on = [module.gcp_module_project]
+  source_dir = "../../../source"
 }

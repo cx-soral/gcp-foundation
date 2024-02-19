@@ -1,4 +1,4 @@
-module "gcp_module_dataset" {
+module "activate_gcp_module_dataset" {
   source = "../../modules/activate-gcp-module-dataset"
 
   landscape_file = var.landscape_file

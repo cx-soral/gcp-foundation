@@ -1,4 +1,4 @@
-module "gcp_module_table" {
+module "activate_gcp_module_table" {
   source = "../../modules/activate-gcp-module-table"
 
   landscape_file = var.landscape_file
