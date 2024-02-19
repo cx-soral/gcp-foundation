@@ -86,8 +86,8 @@ resource "google_iam_workload_identity_pool_provider" "github_provider" {
 resource "google_service_account" "github_provider_sa" {
   for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
   project      = each.value["project_id"]
-  account_id   = "wip-${each.value["repository_name"]}-sa"
-  display_name = "Service Account for Identity Pool provider of ${each.value["repository_name"]}"
+  account_id   = "wip-${each.value["app_name"]}-sa"
+  display_name = "Service Account for Identity Pool provider of ${each.value["app_name"]}"
 }
 
 resource "google_service_account_iam_binding" "service_account_binding" {
