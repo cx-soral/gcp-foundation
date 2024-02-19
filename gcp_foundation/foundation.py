@@ -133,10 +133,11 @@ class Foundation:
         with open(self.landscape_yaml, 'r') as file:
             landscape = yaml.safe_load(file) or {}
         module_dict.update(landscape.get("modules", {}))
-        package_list = [module_config["package"] for module_name, module_config in module_dict.items()]
-        package_list = list(set(package_list))
+        all_packages = [module_config["package"] for module_name, module_config in module_dict.items()]
+        all_packages = list(set(all_packages))
+        package_list = []
 
-        for package_name in package_list:
+        for package_name in all_packages:
             module_name = package_name.replace("-", "_")
             if not os.path.exists(f"./{module_name}"):
                 package_list.append(package_name)
