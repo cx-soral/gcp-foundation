@@ -18,3 +18,8 @@ modules:
     class: Table
     applications:
       - application-05
+  gcp_module_dataset:
+    package: gcp-module-bigquery
+    class: Dataset
+    applications:
+      - application-05
