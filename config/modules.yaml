@@ -1,4 +1,6 @@
-gcp-module-project:
-  Project: {}
-gcp-module-application:
-  Application: {}
+gcp_module_project:
+  package: gcp-module-project
+  class: Project
+gcp_module_application:
+  package: gcp-module-application
+  class: Application

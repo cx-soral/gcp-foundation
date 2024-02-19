@@ -111,33 +111,32 @@ class Foundation:
         self.terraform_init("prd")
         self.terraform_plan("prd")
 
-    def register_module(self, package: str, module_class: str):
+    def register_module(self, module_name: str, package: str, module_class: str):
         if not self.package_pattern.match(package):
             return ValueError("Package name doesn't meet the required pattern")
 
         with open(self.module_yaml, 'r') as file:
-            package_dict = yaml.safe_load(file) or {}
+            module_dict = yaml.safe_load(file) or {}
 
-        if package in package_dict:
-            if module_class not in package_dict[package]:
-                package_dict[package].update({module_class: {}})
-                print(f"Module class {package}/{module_class} Registered")
-            else:
-                print(f"Module class {package}/{module_class} already exists")
+        if module_name in module_dict:
+            print(f"Module {module_name} already exists")
         else:
-            package_dict[package] = {module_class: {}}
-            print(f"Package {package} created, Module class {module_class} Registered")
+            module_dict[module_name] = {"package": package, "class": module_class}
+            print(f"Module {module_name} Registered")
 
         with open(self.module_yaml, 'w') as file:
-            yaml.dump(package_dict, file, default_flow_style=False, sort_keys=False)
+            yaml.dump(module_dict, file, default_flow_style=False, sort_keys=False)
 
     def update_requirements(self):
         with open(self.module_yaml, 'r') as file:
-            package_dict = yaml.safe_load(file) or {}
+            module_dict = yaml.safe_load(file) or {}
         with open(self.landscape_yaml, 'r') as file:
-            activate_dict = yaml.safe_load(file) or {}
-        package_list = []
-        for package_name in package_dict:
+            landscape = yaml.safe_load(file) or {}
+        module_dict.update(landscape.get("modules", {}))
+        package_list = [module_config["package"] for module_name, module_config in module_dict.items()]
+        package_list = list(set(package_list))
+
+        for package_name in package_list:
             module_name = package_name.replace("-", "_")
             if not os.path.exists(f"./{module_name}"):
                 package_list.append(package_name)
@@ -154,21 +153,18 @@ class Foundation:
 
     def enable_modules(self):
         with open(self.module_yaml, 'r') as file:
-            package_dict = yaml.safe_load(file) or {}
-        for package_name, package_config in package_dict.items():
-            module_obj = importlib.import_module(package_name.replace("-", "_"))
-            for module_class_name in package_config:
-                # Check if module file already exists
-                module_class = getattr(module_obj, module_class_name)
-                module_instance = module_class()
-                module_instance.enable(self.module_dir)
+            module_dict = yaml.safe_load(file) or {}
+        for module_name, module_config in module_dict.items():
+            module_obj = importlib.import_module(module_config["package"].replace("-", "_"))
+            module_class = getattr(module_obj, module_config["class"])
+            module_instance = module_class()
+            module_instance.enable(self.module_dir)
 
     def activate_modules(self):
         with open(self.landscape_yaml, 'r') as file:
             landscape = yaml.safe_load(file) or {}
         for module_name, module_config in landscape.get("modules", {}).items():
             module_obj = importlib.import_module(module_config["package"].replace("-", "_"))
-            # Check if module file already exists
             module_class = getattr(module_obj, module_config["class"])
             module_instance = module_class()
             module_instance.activate(self.module_dir)
