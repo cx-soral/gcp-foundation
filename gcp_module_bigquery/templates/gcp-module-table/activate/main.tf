@@ -40,7 +40,7 @@ resource "google_project_iam_member" "gcp_module_table_deployer_role_member" {
 
   project = each.value["project_id"]
   role    = google_project_iam_custom_role.gcp_module_table_deployer_role[each.value["env_name"]].id
-  member  = "serviceAccount:wip-${app_name}-sa@${each.value["project_id"]}.iam.gserviceaccount.com"
+  member  = "serviceAccount:wip-${each.value["app_name"]}-sa@${each.value["project_id"]}.iam.gserviceaccount.com"
 
   depends_on = [google_project_iam_custom_role.gcp_module_table_deployer_role]
 }
