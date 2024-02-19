@@ -124,35 +124,35 @@ resource "github_repository_environment" "action_environments" {
   depends_on = [github_repository.app-repository]
 }
 
-resource "github_actions_environment_variable" "action_var_project_id" {
+resource "github_actions_environment_secret" "secret_project_id" {
   for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
 
   repository       = each.value["repository_name"]
   environment      = each.value["env_name"]
-  variable_name    = "PROJECT_ID"
-  value            = each.value["project_id"]
+  secret_name      = "PROJECT_ID"
+  plaintext_value  = each.value["project_id"]
 
   depends_on = [github_repository.app-repository, github_repository_environment.action_environments]
 }
 
-resource "github_actions_environment_variable" "action_var_wip_name" {
+resource "github_actions_environment_secret" "secret_wip_name" {
   for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
 
   repository       = each.value["repository_name"]
   environment      = each.value["env_name"]
-  variable_name    = "SECRET_WIP_NAME"
-  value            = google_iam_workload_identity_pool_provider.github_provider[each.key].name
+  secret_name      = "SECRET_WIP_NAME"
+  plaintext_value  = google_iam_workload_identity_pool_provider.github_provider[each.key].name
 
   depends_on = [github_repository.app-repository, github_repository_environment.action_environments]
 }
 
-resource "github_actions_environment_variable" "action_var_sa_email" {
+resource "github_actions_environment_secret" "secret_sa_email" {
   for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
 
   repository       = each.value["repository_name"]
   environment      = each.value["env_name"]
-  variable_name    = "PROVIDER_SA_EMAIL"
-  value            = google_service_account.github_provider_sa[each.key].email
+  secret_name      = "PROVIDER_SA_EMAIL"
+  plaintext_value  = google_service_account.github_provider_sa[each.key].email
 
   depends_on = [github_repository.app-repository, github_repository_environment.action_environments]
 }
