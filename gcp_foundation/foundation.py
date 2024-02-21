@@ -105,8 +105,7 @@ class Foundation:
     def prepare(self):
         self.update_requirements()
         self.install_requirements()
-        self.enable_modules()
-        self.activate_modules()
+        self.load_modules()
         self.enable_environments("prd")
         self.terraform_init("prd")
         self.terraform_plan("prd")
@@ -130,9 +129,6 @@ class Foundation:
     def update_requirements(self):
         with open(self.module_yaml, 'r') as file:
             module_dict = yaml.safe_load(file) or {}
-        with open(self.landscape_yaml, 'r') as file:
-            landscape = yaml.safe_load(file) or {}
-        module_dict.update(landscape.get("modules", {}))
         all_packages = [module_config["package"] for module_name, module_config in module_dict.items()]
         all_packages = list(set(all_packages))
         package_list = []
@@ -152,23 +148,18 @@ class Foundation:
     def install_requirements(self):
         subprocess.run(['pip', 'install', '-r', self.requirements_txt], check=True)
 
-    def enable_modules(self):
+    def load_modules(self):
         with open(self.module_yaml, 'r') as file:
             module_dict = yaml.safe_load(file) or {}
         for module_name, module_config in module_dict.items():
             module_obj = importlib.import_module(module_config["package"].replace("-", "_"))
             module_class = getattr(module_obj, module_config["class"])
             module_instance = module_class()
-            module_instance.enable(self.module_dir)
-
-    def activate_modules(self):
-        with open(self.landscape_yaml, 'r') as file:
-            landscape = yaml.safe_load(file) or {}
-        for module_name, module_config in landscape.get("modules", {}).items():
-            module_obj = importlib.import_module(module_config["package"].replace("-", "_"))
-            module_class = getattr(module_obj, module_config["class"])
-            module_instance = module_class()
-            module_instance.activate(self.module_dir)
+            for event in module_dict.get("events", []):
+                if event == "deploy":
+                    module_instance.enable(self.module_dir)
+                elif event == "activate":
+                    module_instance.activate(self.module_dir)
 
     def enable_environments(self, env: str):
         if os.path.exists(os.path.join(self.env_dir, env)):
@@ -176,11 +167,10 @@ class Foundation:
         else:
             shutil.copytree(os.path.join(self.env_dir, "base"), os.path.join(self.env_dir, env))
 
-    def init_module(self, package: str, module_class: str):
-        self.register_module(package, module_class)
+    def init_module(self, module_name: str, package: str, module_class: str):
+        self.register_module(module_name, package, module_class)
         self.update_requirements()
         self.install_requirements()
-        self.enable_modules()
 
     def create_app(self, app_name: str):
         print(f"Creating application: {app_name}")
