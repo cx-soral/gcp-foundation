@@ -37,8 +37,8 @@ resource "github_repository" "app-repository" {
   visibility = each.value["visibility"]
 
   template {
-    owner                = "cx-soral"
-    repository           = "gcp-application"
+    owner                = each.value["repository_owner"]
+    repository           = each.value["repository_name"]
   }
 }
 
