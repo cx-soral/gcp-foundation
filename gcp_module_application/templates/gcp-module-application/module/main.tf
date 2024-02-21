@@ -156,3 +156,14 @@ resource "github_actions_environment_variable" "action_var_sa_email" {
 
   depends_on = [github_repository.app-repository, github_repository_environment.action_environments]
 }
+
+resource "github_actions_environment_variable" "action_var_tf_bucket" {
+  for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
+
+  repository       = each.value["repository_name"]
+  environment      = each.value["env_name"]
+  variable_name    = "TF_BUCKET_NAME"
+  value            = google_storage_bucket.tfstate-bucket[each.key].id
+
+  depends_on = [github_repository.app-repository, github_repository_environment.action_environments]
+}
