@@ -102,13 +102,14 @@ class Foundation:
         # self.install_requirements()
         # self.enable_modules()
 
-    def prepare(self):
+    def prepare(self, skip_terraform: bool = False):
         self.update_requirements()
         self.install_requirements()
         self.load_modules()
         self.enable_environments("prd")
-        self.terraform_init("prd")
-        self.terraform_plan("prd")
+        if not skip_terraform:
+            self.terraform_init("prd")
+            self.terraform_plan("prd")
 
     def register_module(self, module_name: str, package: str, module_class: str):
         if not self.package_pattern.match(package):
@@ -155,7 +156,7 @@ class Foundation:
             module_obj = importlib.import_module(module_config["package"].replace("-", "_"))
             module_class = getattr(module_obj, module_config["class"])
             module_instance = module_class()
-            for event in module_dict.get("events", []):
+            for event in module_config.get("events", []):
                 if event == "deploy":
                     module_instance.enable(self.module_dir)
                 elif event == "activate":

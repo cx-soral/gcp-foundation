@@ -18,6 +18,7 @@ def main():
 
     # Create the parser for the "prepare" command
     parser_prepare = subparsers.add_parser('prepare', help='Prepare current configurations')
+    parser_prepare.add_argument('--skip_terraform', action='store_true', help='Skip Terraform steps')
 
     # Create the parser for the "init-module" command
     parser_install = subparsers.add_parser('init-module', help='Install a module')
@@ -38,7 +39,7 @@ def main():
     if args.command == 'birth':
         foundation.birth(foundation_name=args.foundation_name)
     if args.command == 'prepare':
-        foundation.prepare()
+        foundation.prepare(args.skip_terraform)
     elif args.command == 'init-module':
         foundation.init_module(package=args.package, module_class=args.module_class)
     elif args.command == 'create-app':
