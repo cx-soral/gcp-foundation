@@ -1,4 +1,4 @@
-from gcp_foundation.foundation import Foundation
+from gcp_framework.foundation import Foundation
 
 __all__ = [
     "Foundation"

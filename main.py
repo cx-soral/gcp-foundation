@@ -1,5 +1,5 @@
 import argparse
-from gcp_foundation import Foundation
+from gcp_framework import Foundation
 
 
 def main():
