@@ -25,7 +25,9 @@ resource "google_project_service" "artifact_registry_api" {
 }
 
 resource "google_artifact_registry_repository" "pypi_remote" {
-  project       = local.landscape["settings"]["realm_project"]
+  for_each = local.environment_dict
+
+  project       = "${local.project_prefix}${each.key}"
   location      = local.landscape["settings"]["project_region"]
   repository_id = "pypi-remote"
   format        = "PYTHON"
@@ -42,11 +44,13 @@ resource "google_artifact_registry_repository" "pypi_remote" {
 }
 
 resource "google_artifact_registry_repository" "pypi_local" {
-  project       = local.landscape["settings"]["realm_project"]
+  for_each = local.environment_dict
+
+  project       = "${local.project_prefix}${each.key}"
   location      = local.landscape["settings"]["project_region"]
-  repository_id = local.landscape["settings"]["foundation_name"]
+  repository_id = "pypi_local"
   format        = "PYTHON"
-  description   = "PyPI repository of foundation ${local.landscape["settings"]["foundation_name"]}"
+  description   = "Local PyPI repository"
 
   depends_on = [google_project_service.artifact_registry_api]
 }
