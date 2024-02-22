@@ -33,7 +33,9 @@ resource "google_artifact_registry_repository" "pypi_remote" {
   description   = "PyPI repository proxy"
   remote_repository_config {
     description = "Official Pypi Repository"
-    python_repository = "PYPI"
+    python_repository {
+      public_repository = "PYPI"
+    }
   }
 
   depends_on = [google_project_service.artifact_registry_api]
