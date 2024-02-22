@@ -72,7 +72,7 @@ resource "google_artifact_registry_repository" "pypi" {
       priority    = 20
     }
     upstream_policies {
-      id          = "custom"
+      id          = "pypi-custom"
       repository  = google_artifact_registry_repository.pypi_custom[each.key].id
       priority    = 10
     }
