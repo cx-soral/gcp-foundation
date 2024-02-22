@@ -24,12 +24,12 @@ resource "google_project_service" "artifact_registry_api" {
   disable_on_destroy = false
 }
 
-resource "google_artifact_registry_repository" "pypi_remote" {
+resource "google_artifact_registry_repository" "pypi_official" {
   for_each = local.environment_dict
 
   project       = "${local.project_prefix}${each.key}"
   location      = local.landscape["settings"]["project_region"]
-  repository_id = "pypi-remote"
+  repository_id = "pypi-official"
   format        = "PYTHON"
   mode          = "REMOTE_REPOSITORY"
   description   = "PyPI repository proxy"
@@ -43,14 +43,36 @@ resource "google_artifact_registry_repository" "pypi_remote" {
   depends_on = [google_project_service.artifact_registry_api]
 }
 
-resource "google_artifact_registry_repository" "pypi_local" {
+resource "google_artifact_registry_repository" "pypi_custom" {
   for_each = local.environment_dict
 
   project       = "${local.project_prefix}${each.key}"
   location      = local.landscape["settings"]["project_region"]
-  repository_id = "pypi_local"
+  repository_id = "pypi-custom"
   format        = "PYTHON"
-  description   = "Local PyPI repository"
+  description   = "Custom PyPI repository"
 
   depends_on = [google_project_service.artifact_registry_api]
+}
+
+resource "google_artifact_registry_repository" "pypi" {
+  for_each = local.environment_dict
+
+  location      = local.landscape["settings"]["project_region"]
+  repository_id = "pypi"
+  description   = "PyPI repository"
+  format        = "PYTHON"
+  mode          = "VIRTUAL_REPOSITORY"
+  virtual_repository_config {
+    upstream_policies {
+      id          = "pypi-official"
+      repository  = google_artifact_registry_repository.pypi_official[each.key].id
+      priority    = 20
+    }
+    upstream_policies {
+      id          = "custom"
+      repository  = google_artifact_registry_repository.pypi_custom[each.key].id
+      priority    = 10
+    }
+  }
 }
