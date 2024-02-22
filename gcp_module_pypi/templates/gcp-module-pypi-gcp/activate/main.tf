@@ -18,27 +18,32 @@ locals {
   ]))
 }
 
-resource "google_project_iam_custom_role" "gcp_module_dataset_deployer_role" {
-  for_each = local.environment_dict
-
-  project     = "${local.project_prefix}${each.key}"
-  role_id     = "gcpModuleDatasetDeployer"
-  title       = "GCP Bigquery Dataset Deployer Role"
-  description = "GCP Bigquery Dataset Deployer Role"
-  permissions = [
-    "bigquery.datasets.create",
-    "bigquery.datasets.get",
-    "bigquery.datasets.update",
-    "bigquery.datasets.delete"
-  ]
+resource "google_project_service" "artifact_registry_api" {
+  service = "artifactregistry.googleapis.com"
+  project = local.landscape["settings"]["realm_project"]
+  disable_on_destroy = false
 }
 
-resource "google_project_iam_member" "gcp_module_table_dataset_role_member" {
-  for_each = { for s in local.all_role_attribution : "${s.app_name}-${s.env_name}" => s }
+resource "google_artifact_registry_repository" "pypi_remote" {
+  project       = local.landscape["settings"]["realm_project"]
+  location      = local.landscape["settings"]["project_region"]
+  repository_id = pypi-remote
+  format        = "PYTHON"
+  description   = "PyPI repository of foundation ${local.landscape["settings"]["foundation_name"]}"
+  remote_repository_config {
+    description = "Official Pypi Repository"
+    python_repository = "PYPI"
+  }
 
-  project = each.value["project_id"]
-  role    = google_project_iam_custom_role.gcp_module_dataset_deployer_role[each.value["env_name"]].id
-  member  = "serviceAccount:wip-${each.value["app_name"]}-sa@${each.value["project_id"]}.iam.gserviceaccount.com"
+  depends_on = [google_project_service.artifact_registry_api]
+}
 
-  depends_on = [google_project_iam_custom_role.gcp_module_dataset_deployer_role]
+resource "google_artifact_registry_repository" "pypi_local" {
+  project       = local.landscape["settings"]["realm_project"]
+  location      = local.landscape["settings"]["project_region"]
+  repository_id = local.landscape["settings"]["foundation_name"]
+  format        = "PYTHON"
+  description   = "PyPI repository of foundation ${local.landscape["settings"]["foundation_name"]}"
+
+  depends_on = [google_project_service.artifact_registry_api]
 }

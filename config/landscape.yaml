@@ -5,6 +5,7 @@ settings:
   billing_account: 010054-67434E-D5BFF4
   foundation_name: soral-app
   project_prefix: soral-app-
+  project_region: europe-west1
 environments:
   dev:
     match_branch: refs/heads/main
