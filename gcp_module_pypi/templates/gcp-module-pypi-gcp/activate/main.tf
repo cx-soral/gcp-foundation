@@ -27,9 +27,10 @@ resource "google_project_service" "artifact_registry_api" {
 resource "google_artifact_registry_repository" "pypi_remote" {
   project       = local.landscape["settings"]["realm_project"]
   location      = local.landscape["settings"]["project_region"]
-  repository_id = pypi-remote
+  repository_id = "pypi-remote"
   format        = "PYTHON"
-  description   = "PyPI repository of foundation ${local.landscape["settings"]["foundation_name"]}"
+  mode          = "REMOTE_REPOSITORY"
+  description   = "PyPI repository proxy"
   remote_repository_config {
     description = "Official Pypi Repository"
     python_repository = "PYPI"
