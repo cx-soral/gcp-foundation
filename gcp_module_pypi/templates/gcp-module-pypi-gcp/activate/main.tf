@@ -60,6 +60,7 @@ resource "google_artifact_registry_repository" "pypi_custom" {
 resource "google_artifact_registry_repository" "pypi" {
   for_each = local.environment_dict
 
+  project       = "${local.project_prefix}${each.key}"
   location      = local.landscape["settings"]["project_region"]
   repository_id = "pypi"
   description   = "PyPI repository"
