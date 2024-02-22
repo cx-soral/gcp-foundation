@@ -19,8 +19,10 @@ locals {
 }
 
 resource "google_project_service" "artifact_registry_api" {
+  for_each = local.environment_dict
+
+  project = "${local.project_prefix}${each.key}"
   service = "artifactregistry.googleapis.com"
-  project = local.landscape["settings"]["realm_project"]
   disable_on_destroy = false
 }
 
