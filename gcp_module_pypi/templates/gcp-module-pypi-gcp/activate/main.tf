@@ -78,4 +78,18 @@ resource "google_artifact_registry_repository" "pypi" {
       priority    = 10
     }
   }
+  depends_on = [google_artifact_registry_repository.pypi_custom, google_artifact_registry_repository.pypi_official]
+}
+
+resource "google_project_iam_custom_role" "gcp_module_python_deployer_role" {
+  for_each = local.environment_dict
+
+  project     = "${local.project_prefix}${each.key}"
+  role_id     = "gcpModulePythonDeployer"
+  title       = "GCP Python Module Deployer Role"
+  description = "GCP Python Module Deployer Role"
+  permissions = [
+    "bigquery.datasets.update",
+    "bigquery.datasets.delete"
+  ]
 }
