@@ -4,3 +4,9 @@ application-05:
   repository_name: application-05
   template_owner: cx-soral
   template_name: gcp-application
+gcp-framework:
+  visibility: public
+  repository_owner: cx-soral
+  repository_name: gcp-framework
+  template_owner: cx-soral
+  template_name: gcp-module-python
