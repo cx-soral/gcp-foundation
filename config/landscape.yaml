@@ -15,12 +15,11 @@ environments:
     match_branch: none^
 modules:
   gcp_module_table:
-    package: gcp-module-bigquery
-    class: Table
     applications:
       - application-05
   gcp_module_dataset:
-    package: gcp-module-bigquery
-    class: Dataset
     applications:
       - application-05
+  gcp_module_pypi_gcp:
+    applications:
+      - gcp-framework
