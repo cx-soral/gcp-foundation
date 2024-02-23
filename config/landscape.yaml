@@ -12,7 +12,7 @@ environments:
   sit:
     match_branch: refs/tags/.*
   prd:
-    match_branch: none^
+    match_branch: refs/tags/.*
 modules:
   gcp_module_table:
     applications:

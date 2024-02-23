@@ -4,7 +4,7 @@ all:
 	@echo "Specify a command to run"
 
 init:
-	python3 -m venv .venv
+	python3 -m venv .venv; \
 	. .venv/bin/activate; \
 	pip install PyYAML;
 
