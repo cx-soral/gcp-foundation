@@ -5,8 +5,8 @@ all:
 
 init:
 	python3 -m venv .venv
-	source .venv/bin/activate
-	pip install PyYAML
+	. .venv/bin/activate; \
+	pip install PyYAML; \
 	pip install git+https://github.com/cx-soral/gcp-framework
 
 bigbang: init
