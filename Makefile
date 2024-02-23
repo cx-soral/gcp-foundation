@@ -4,7 +4,10 @@ all:
 	@echo "Specify a command to run"
 
 init:
+	python3 -m venv .venv
+	./.venv/bin/activate;
 	pip install PyYAML
+	pip install git+https://github.com/cx-soral/gcp-framework
 
 bigbang: init
 	@if [ -z "$(realm_project)" ]; then \
