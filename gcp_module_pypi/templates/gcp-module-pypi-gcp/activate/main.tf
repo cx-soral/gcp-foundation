@@ -3,7 +3,7 @@ locals {
   applications = yamldecode(file(var.applications_file))
   project_prefix = local.landscape["settings"]["project_prefix"]
   environment_dict = local.landscape["environments"]
-  application_list = local.landscape["modules"]["gcp_module_table"]["applications"]
+  application_list = local.landscape["modules"]["gcp_module_pypi_gcp"]["applications"]
 }
 
 locals {
