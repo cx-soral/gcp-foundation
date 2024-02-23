@@ -6,8 +6,7 @@ all:
 init:
 	python3 -m venv .venv
 	. .venv/bin/activate; \
-	pip install PyYAML; \
-	pip install git+https://github.com/cx-soral/gcp-framework
+	pip install PyYAML;
 
 bigbang: init
 	@if [ -z "$(realm_project)" ]; then \
