@@ -89,7 +89,17 @@ resource "google_project_iam_custom_role" "gcp_module_python_deployer_role" {
   title       = "GCP Python Module Deployer Role"
   description = "GCP Python Module Deployer Role"
   permissions = [
-    "bigquery.datasets.update",
-    "bigquery.datasets.delete"
+    "artifactregistry.packages.get",
+    "artifactregistry.packages.list",
+    "artifactregistry.projectsettings.get",
+    "artifactregistry.pythonpackages.get",
+    "artifactregistry.pythonpackages.list",
+    "artifactregistry.repositories.downloadArtifacts",
+    "artifactregistry.repositories.uploadArtifacts",
+    "artifactregistry.repositories.get",
+    "artifactregistry.repositories.list",
+    "artifactregistry.repositories.listEffectiveTags",
+    "artifactregistry.repositories.listTagBindings",
+    "artifactregistry.repositories.readViaVirtualRepository"
   ]
 }

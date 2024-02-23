@@ -24,7 +24,8 @@ birth: init
 	fi
 
 apply: init
-	@python main.py prepare
+	@. .venv/bin/activate; \
+	python main.py prepare
 
 init-module: init
 	@if [ -z "$(module_class)" ] || [ -z "$(package)" ]; then \
