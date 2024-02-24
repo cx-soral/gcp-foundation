@@ -157,7 +157,7 @@ class Foundation(Framework):
             module_obj = importlib.import_module(module_config["package"].replace("-", "_"))
             module_class = getattr(module_obj, module_config["class"])
             module_instance = module_class()
-            for event, event_cfg in module_config.get("events", {}):
+            for event, event_cfg in module_config.get("events", {}).items():
                 event_cfg = {} if not event_cfg else event_cfg
                 if event == "deploy":
                     module_instance.enable(self.module_dir, **event_cfg)
