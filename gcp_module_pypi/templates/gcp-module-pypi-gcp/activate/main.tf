@@ -117,3 +117,14 @@ resource "google_artifact_registry_repository_iam_member" "gcp_module_python_dep
 
   depends_on = [google_project_iam_custom_role.gcp_module_python_deployer_role]
 }
+
+resource "github_actions_environment_variable" "action_var_gcp_repo_region" {
+  for_each = { for s in local.all_role_attribution : "${s.app_name}-${s.env_name}" => s }
+
+  repository       = each.value["repository_name"]
+  environment      = each.value["env_name"]
+  variable_name    = "GCP_REPO_REGION"
+  value            = local.repository_region
+
+  depends_on = [github_repository.app-repository, github_repository_environment.action_environments]
+}
