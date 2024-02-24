@@ -10,3 +10,10 @@ gcp-framework:
   repository_name: gcp-framework
   template_owner: cx-soral
   template_name: gcp-template-python
+gcp-template-module:
+  visibility: public
+  is_template: true
+  repository_owner: cx-soral
+  repository_name: gcp-template-module
+  template_owner: cx-soral
+  template_name: gcp-template-python

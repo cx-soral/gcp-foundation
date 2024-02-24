@@ -65,6 +65,7 @@ resource "github_repository" "app-repository" {
 
   name        = each.value["repository_name"]
   description = "Application: ${each.value["repository_name"]}"
+  is_template = lookup(each.value, "is_template", false)
 
   visibility = each.value["visibility"]
 
