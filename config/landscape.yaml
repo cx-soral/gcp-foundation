@@ -27,3 +27,4 @@ modules:
       - gcp-template-module
       - gcp-module
       - gcp-module-application
+      - gcp-module-project
