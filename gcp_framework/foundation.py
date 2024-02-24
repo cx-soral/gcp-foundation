@@ -148,7 +148,11 @@ class Foundation(Framework):
             file.write(requirements_content)
 
     def install_requirements(self):
-        subprocess.run(['pip', 'install', '-r', self.requirements_txt], check=True)
+        with open(self.landscape_yaml, 'r') as file:
+            landscape_dict = yaml.safe_load(file) or {}
+        pip_index_url = landscape_dict["settings"].get("pip_index_url", "https://pypi.org/simple")
+        subprocess.run(['pip', 'install', '-r', self.requirements_txt,
+                        f"--index-url={pip_index_url}"], check=True)
 
     def load_modules(self):
         with open(self.module_yaml, 'r') as file:

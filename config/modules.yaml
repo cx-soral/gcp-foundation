@@ -3,6 +3,9 @@ gcp_module_project:
   class: Project
   events:
     deploy:
+gcp_module:
+  package: gcp-module
+  class: Module
 gcp_module_application:
   package: gcp-module-application
   class: Application
