@@ -23,3 +23,9 @@ gcp-module:
   repository_name: gcp-module
   template_owner: cx-soral
   template_name: gcp-template-module
+gcp-module-application:
+  visibility: public
+  repository_owner: cx-soral
+  repository_name: gcp-module-application
+  template_owner: cx-soral
+  template_name: gcp-template-module

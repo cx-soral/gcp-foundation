@@ -137,11 +137,14 @@ class Foundation(Framework):
 
         for package_name in all_packages:
             module_name = package_name.replace("-", "_")
-            if not os.path.exists(f"./{module_name}"):
+            if os.path.exists(f"./{module_name}"):
+                print(f"Found local package {package_name}: ./{module_name}")
+            elif os.path.exists(f"../{package_name}"):
+                print(f"Found local package {package_name}: ../{package_name}")
+            else:
                 package_list.append(package_name)
                 print(f"{package_name} added to requirements")
-            else:
-                print(f"Found local package {package_name}")
+
 
         requirements_content = "\n".join(package_list)
         with open(self.requirements_txt, 'w') as file:
