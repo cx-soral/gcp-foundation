@@ -134,7 +134,8 @@ resource "github_repository_environment_deployment_policy" "action_environment_p
 
   environment         = github_repository_environment.action_environments[each.key].environment
   repository          = each.value["repository_name"]
-  branch_pattern      = environment_dict[each.value["env_name"]]["match_branch"]
+  branch_pattern      = local.environment_dict[each.value["env_name"]]["match_branch"]
+
 }
 
 resource "github_actions_environment_variable" "action_var_project_id" {
