@@ -7,7 +7,9 @@ init:
 	python3 -m venv .venv; \
 	sleep 5; \
 	. .venv/bin/activate; \
-	pip install PyYAML;
+	pip install PyYAML keyring; \
+    pip install keyrings.google-artifactregistry-auth; \
+    pip install gcp-framework --index-url=https://europe-west1-python.pkg.dev/soral-app-prd/pypi/simple/
 
 bigbang: init
 	@if [ -z "$(realm_project)" ]; then \
