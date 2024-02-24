@@ -26,15 +26,16 @@ class Module:
         target_module_dir = os.path.sep.join([module_dir, self.module_name])
         if os.path.exists(target_module_dir):
             print(f"Found local module {self.module_name}")
-        elif not os.path.exists(self.activate_dir):
-            print("No module defined-{self.module_name}, skip")
-            return
+        elif not os.path.exists(self.module_dir):
+            print(f"No module directory defined-{self.module_name}, skip")
         else:
             shutil.copytree(self.module_dir, target_module_dir)
             print(f"Global module {self.module_name} loaded")
         target_base_file = os.path.sep.join([base_dir, self.module_name.replace("-", "_") + ".tf"])
         if os.path.exists(target_base_file):
             print(f"Found local base file {target_base_file}")
+        elif not os.path.exists(self.base_file):
+            print(f"No base file defined-{self.module_name}, skip")
         else:
             shutil.copy(self.base_file, target_base_file)
             print(f"Global base file {target_base_file} loaded")
@@ -51,14 +52,15 @@ class Module:
         if os.path.exists(target_module_dir):
             print(f"Found local module activate-{self.module_name}")
         elif not os.path.exists(self.activate_dir):
-            print("No activate module defined-{self.module_name}, skip")
-            return
+            print(f"No activate module directory defined-{self.module_name}, skip")
         else:
             shutil.copytree(self.activate_dir, target_module_dir)
             print(f"Global module activate-{self.module_name} loaded")
         target_file = os.path.sep.join([base_dir, "activate_" + self.module_name.replace("-", "_") + ".tf"])
         if os.path.exists(target_file):
             print(f"Found local activate file {target_file}")
+        elif not os.path.exists(self.activate_file):
+            print(f"No activate file defined-{self.module_name}, skip")
         else:
             shutil.copy(self.activate_file, target_file)
             print(f"Global activate file {target_file} loaded")
