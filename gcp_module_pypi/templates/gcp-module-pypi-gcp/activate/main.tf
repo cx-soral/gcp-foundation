@@ -125,6 +125,4 @@ resource "github_actions_environment_variable" "action_var_gcp_repo_region" {
   environment      = each.value["env_name"]
   variable_name    = "GCP_REPO_REGION"
   value            = local.repository_region
-
-  depends_on = [github_repository.app-repository, github_repository_environment.action_environments]
 }
