@@ -55,7 +55,7 @@ locals {
 }
 
 data "github_users" "review_users" {
-  for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s if length(s.user_names) > 0}
+  for_each = { for s in local.all_review_users : "${s.app_name}-${s.env_name}" => s if length(s.user_names) > 0}
 
   usernames = each.value["user_names"]
 }
