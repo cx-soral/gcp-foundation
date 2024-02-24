@@ -28,3 +28,4 @@ modules:
       - gcp-module
       - gcp-module-application
       - gcp-module-project
+      - gcp-module-pypi
