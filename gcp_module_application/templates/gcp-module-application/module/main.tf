@@ -121,21 +121,7 @@ resource "github_repository_environment" "action_environments" {
   environment         = each.value["env_name"]
   repository          = each.value["repository_name"]
 
-  deployment_branch_policy {
-    protected_branches     = false
-    custom_branch_policies = true
-  }
-
   depends_on = [github_repository.app-repository]
-}
-
-resource "github_repository_environment_deployment_policy" "action_environment_policies" {
-  for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
-
-  environment         = github_repository_environment.action_environments[each.key].environment
-  repository          = each.value["repository_name"]
-  branch_pattern      = local.environment_dict[each.value["env_name"]]["match_branch"]
-
 }
 
 resource "github_actions_environment_variable" "action_var_project_id" {
