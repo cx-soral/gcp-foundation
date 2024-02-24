@@ -87,7 +87,7 @@ resource "google_storage_bucket" "tfstate-bucket" {
 resource "google_iam_workload_identity_pool" "github_pool" {
   for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
 
-  workload_identity_pool_id = "github-pool-${each.value["repository_name"]}"
+  workload_identity_pool_id = "gh-${each.value["repository_name"]}"
   project  = each.value["project_id"]
 
   # Workload Identity Pool configuration
@@ -102,7 +102,7 @@ resource "google_iam_workload_identity_pool_provider" "github_provider" {
   for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
 
   workload_identity_pool_id = google_iam_workload_identity_pool.github_pool[each.key].workload_identity_pool_id
-  workload_identity_pool_provider_id     = "github-provider-${each.value["repository_name"]}"
+  workload_identity_pool_provider_id     = "ghp-${each.value["repository_name"]}"
   project  = each.value["project_id"]
 
   # Provider configuration specific to GitHub
