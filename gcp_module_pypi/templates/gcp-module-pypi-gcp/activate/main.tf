@@ -1,5 +1,5 @@
 locals {
-  module_name = substr(basename(dirname(path.module)), 9, length(basename(dirname(path.module))) - 9)
+  module_name = basename(dirname(path.module))
   landscape = yamldecode(file(var.landscape_file))
   applications = yamldecode(file(var.applications_file))
   project_prefix = local.landscape["settings"]["project_prefix"]
