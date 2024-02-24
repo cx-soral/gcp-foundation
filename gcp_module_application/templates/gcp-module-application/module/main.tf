@@ -121,6 +121,12 @@ resource "github_repository_environment" "action_environments" {
   environment         = each.value["env_name"]
   repository          = each.value["repository_name"]
 
+  wait_timer          = lookup(local.environment_dict[each.value["env_name"]], "wait_timer", null)
+
+  reviewers {
+    teams = []
+    users = []
+  }
   depends_on = [github_repository.app-repository]
 }
 
