@@ -32,7 +32,7 @@ resource "google_artifact_registry_repository" "pypi_official" {
   for_each = local.environment_dict
 
   project       = "${local.project_prefix}${each.key}"
-  location      = local.landscape["settings"][local.repository_region]
+  location      = local.repository_region
   repository_id = "pypi-official"
   format        = "PYTHON"
   mode          = "REMOTE_REPOSITORY"
@@ -51,7 +51,7 @@ resource "google_artifact_registry_repository" "pypi_custom" {
   for_each = local.environment_dict
 
   project       = "${local.project_prefix}${each.key}"
-  location      = local.landscape["settings"][local.repository_region]
+  location      = local.repository_region
   repository_id = "pypi-custom"
   format        = "PYTHON"
   description   = "Custom PyPI repository"
@@ -63,7 +63,7 @@ resource "google_artifact_registry_repository" "pypi" {
   for_each = local.environment_dict
 
   project       = "${local.project_prefix}${each.key}"
-  location      = local.landscape["settings"][local.repository_region]
+  location      = local.repository_region
   repository_id = "pypi"
   description   = "PyPI repository"
   format        = "PYTHON"
