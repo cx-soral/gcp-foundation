@@ -1,9 +1,10 @@
 locals {
+  module_name = substr(basename(dirname(path.module)), 9, length(basename(dirname(path.module))) - 9)
   landscape = yamldecode(file(var.landscape_file))
   applications = yamldecode(file(var.applications_file))
   project_prefix = local.landscape["settings"]["project_prefix"]
   environment_dict = local.landscape["environments"]
-  application_list = local.landscape["modules"]["gcp_module_pypi_gcp"]["applications"]
+  application_list = local.landscape["modules"][local.module_name]["applications"]
 }
 
 locals {
