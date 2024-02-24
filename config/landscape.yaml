@@ -9,6 +9,8 @@ settings:
 environments:
   dev:
     match_branch: refs/heads/main
+    review_users:
+      - cx-soral
   sit:
     match_branch: refs/tags/.*
   prd:
