@@ -28,6 +28,38 @@ locals {
   ]))
 }
 
+locals {
+  all_review_users = toset(flatten([
+    for app_name, app in local.applications : [
+      for env_name, env in local.environment_dict : {
+        app_name          = app_name
+        env_name          = env_name
+        user_names        = lookup(env, "review_users", [])
+      }
+    ]
+  ]))
+}
+
+locals {
+  all_review_teams = toset(flatten([
+    for app_name, app in local.applications : [
+      for env_name, env in local.environment_dict : [
+        for team_name in lookup(env, "review_teams", []): {
+          app_name          = app_name
+          env_name          = env_name
+          team_name         = team_name
+        }
+      ]
+    ]
+  ]))
+}
+
+data "github_users" "review_users" {
+  for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
+
+  usernames = each.value["user_names"]
+}
+
 resource "github_repository" "app-repository" {
   for_each = local.applications
 
