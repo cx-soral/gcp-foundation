@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    github = {
+      source  = "integrations/github"
+    }
+  }
+}
+
 locals {
   module_name = replace(substr(basename(path.module), 9, length(basename(path.module)) - 9), "-", "_")
   landscape = yamldecode(file(var.landscape_file))
