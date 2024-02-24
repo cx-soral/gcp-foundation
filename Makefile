@@ -22,6 +22,7 @@ birth: init
 	@if [ -z "$(foundation_name)" ]; then \
 		echo "Foundation name not specified. Usage: make birth foundation_name=<foundation_name>"; \
 	else \
+	    . .venv/bin/activate; \
 		python main.py birth -n $(foundation_name); \
 	fi
 
