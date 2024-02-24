@@ -91,7 +91,7 @@ resource "google_iam_workload_identity_pool" "github_pool" {
   project  = each.value["project_id"]
 
   # Workload Identity Pool configuration
-  display_name = "github-pool-${each.value["repository_name"]}"
+  display_name = "gh-${each.value["repository_name"]}"
   description  = "Pool for GitHub Actions of ${each.value["repository_name"]}"
 
   # Make sure the pool is in a state to be used
@@ -106,7 +106,7 @@ resource "google_iam_workload_identity_pool_provider" "github_provider" {
   project  = each.value["project_id"]
 
   # Provider configuration specific to GitHub
-  display_name = "github-provider-${each.value["repository_name"]}"
+  display_name = "ghp-${each.value["repository_name"]}"
   description  = "Provider for GitHub Actions of ${each.value["repository_name"]}"
 
    # Attribute mapping / condition from the OIDC token to Google Cloud attributes
