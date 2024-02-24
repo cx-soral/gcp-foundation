@@ -55,7 +55,7 @@ locals {
 }
 
 data "github_users" "review_users" {
-  for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s }
+  for_each = { for s in local.all_pool_settings : "${s.app_name}-${s.env_name}" => s if length(s.user_names) > 0}
 
   usernames = each.value["user_names"]
 }
@@ -154,6 +154,10 @@ resource "github_repository_environment" "action_environments" {
   repository          = each.value["repository_name"]
 
   wait_timer          = lookup(local.environment_dict[each.value["env_name"]], "wait_timer", null)
+
+  reviewers {
+    users = lookup(data.github_users.review_users, each.key, {node_ids = []}).node_ids
+  }
 
   depends_on = [github_repository.app-repository]
 }
