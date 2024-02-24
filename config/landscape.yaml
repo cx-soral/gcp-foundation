@@ -5,6 +5,7 @@ settings:
   billing_account: 010054-67434E-D5BFF4
   foundation_name: soral-app
   project_prefix: soral-app-
+  pip_index_url: https://europe-west1-python.pkg.dev/soral-app-prd/pypi/simple/
 environments:
   dev:
     match_branch: refs/heads/main
