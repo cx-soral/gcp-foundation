@@ -157,11 +157,12 @@ class Foundation(Framework):
             module_obj = importlib.import_module(module_config["package"].replace("-", "_"))
             module_class = getattr(module_obj, module_config["class"])
             module_instance = module_class()
-            for event in module_config.get("events", []):
+            for event, event_cfg in module_config.get("events", {}):
+                event_cfg = {} if not event_cfg else event_cfg
                 if event == "deploy":
-                    module_instance.enable(self.module_dir)
+                    module_instance.enable(self.module_dir, **event_cfg)
                 elif event == "activate":
-                    module_instance.activate(self.module_dir)
+                    module_instance.activate(self.module_dir, **event_cfg)
 
     def enable_environments(self, env: str):
         if os.path.exists(os.path.join(self.env_dir, env)):

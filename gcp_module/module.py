@@ -16,7 +16,7 @@ class Module:
         self.activate_file = os.path.join(self.base_dir, "activate.tf")
 
     def enable(self, module_dir: str = os.path.sep.join(["iac", "modules"]),
-               base_dir: str = os.path.sep.join(["iac", "environments", "base"])):
+               base_dir: str = os.path.sep.join(["iac", "environments", "base"]), **kwargs):
         """Enable a module
 
         Args:
@@ -26,6 +26,9 @@ class Module:
         target_module_dir = os.path.sep.join([module_dir, self.module_name])
         if os.path.exists(target_module_dir):
             print(f"Found local module {self.module_name}")
+        elif not os.path.exists(self.activate_dir):
+            print("No module defined-{self.module_name}, skip")
+            return
         else:
             shutil.copytree(self.module_dir, target_module_dir)
             print(f"Global module {self.module_name} loaded")
@@ -37,7 +40,7 @@ class Module:
             print(f"Global base file {target_base_file} loaded")
 
     def activate(self, module_dir: str = os.path.sep.join(["iac", "modules"]),
-                 base_dir: str = os.path.sep.join(["iac", "environments", "base"])):
+                 base_dir: str = os.path.sep.join(["iac", "environments", "base"]), **kwargs):
         """Activate a module in a foundation
 
         Args:
@@ -47,6 +50,9 @@ class Module:
         target_module_dir = os.path.sep.join([module_dir, "activate-" + self.module_name])
         if os.path.exists(target_module_dir):
             print(f"Found local module activate-{self.module_name}")
+        elif not os.path.exists(self.activate_dir):
+            print("No activate module defined-{self.module_name}, skip")
+            return
         else:
             shutil.copytree(self.activate_dir, target_module_dir)
             print(f"Global module activate-{self.module_name} loaded")

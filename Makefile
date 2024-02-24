@@ -5,7 +5,7 @@ all:
 
 init:
 	python3 -m venv .venv; \
-	sleep 10; \
+	sleep 5; \
 	. .venv/bin/activate; \
 	pip install PyYAML;
 
